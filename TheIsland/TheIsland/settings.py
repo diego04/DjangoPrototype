@@ -15,6 +15,20 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+#Oauth
+#http://web.archive.org/web/20130202050244/http://techstricks.com/django-allauth-tutorial-step-by-step/
+APP_PATH = os.path.dirname(os.path.abspath(__file__))
+
+#templates
+SETTINGS_DIR = os.path.dirname(__file__)
+PROJECT_PATH = os.path.join(SETTINGS_DIR, os.pardir)
+PROJECT_PATH = os.path.abspath(PROJECT_PATH)
+
+TEMPLATE_PATH = os.path.join(PROJECT_PATH, 'Templates/templates')
+
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
@@ -35,6 +49,10 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     # `allauth` specific context processors
     "allauth.account.context_processors.account",
     "allauth.socialaccount.context_processors.socialaccount",
+
+    #from first tutorial
+    'django.contrib.auth.context_processors.auth',
+
 )
 
 AUTHENTICATION_BACKENDS = (
@@ -44,13 +62,22 @@ AUTHENTICATION_BACKENDS = (
     "allauth.account.auth_backends.AuthenticationBackend",
 )
 
+# auth and allauth settings
+LOGIN_REDIRECT_URL = '/'
+SOCIALACCOUNT_QUERY_EMAIL = True
+SOCIALACCOUNT_PROVIDERS = {
+    'facebook': {
+        'SCOPE': ['email', 'publish_stream'],
+        'METHOD': 'js_sdk'  # instead of 'oauth2'
+    }
+}
+
 
 TEMPLATE_DIRS = (
-    # allauth templates: you could copy this directory into your
-    # project and tweak it according to your needs
-    # os.path.join(PROJECT_ROOT, 'templates', 'uniform', 'allauth'),
-    # example project specific templates
-    #os.path.join(PROJECT_ROOT, 'templates', 'plain', 'example'),
+    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
+    # Always use forward slashes, even on Windows.
+    # Don't forget to use absolute paths, not relative paths.
+    TEMPLATE_PATH,
 )
 
 
@@ -72,6 +99,11 @@ INSTALLED_APPS = (
 
     #this is where we add social media sites
     'allauth.socialaccount.providers.facebook',
+
+    #from first tutorial
+    #'django.contrib.admindocs',
+    'login',
+    'Templates',
 )
 
 # Don't forget the SITE_ID (A model for storing the domain and name attributes of a Web site.
